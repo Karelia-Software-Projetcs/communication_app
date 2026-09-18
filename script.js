@@ -104,6 +104,9 @@ function playAudio(message) {
     speech.lang = "en-US";
   }
 
+  speech.pitch = 1.5;
+  speech.rate = 0.5;
+
   window.speechSynthesis.cancel();
   window.speechSynthesis.speak(speech);
 }
