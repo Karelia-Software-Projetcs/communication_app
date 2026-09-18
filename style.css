@@ -1,0 +1,378 @@
+/* Basic settings */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  min-height: 100vh;
+  background: #f7f9ff;
+  color: #101b52;
+}
+
+/* Header */
+
+.app-header {
+  height: 95px;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 3px solid #dce6ff;
+  /* Keep header content aligned with the student screen, not browser edges. */
+  padding: 10px max(18px, calc((100% - 900px) / 2 + 25px));
+}
+
+.app-header h1 {
+  font-size: 42px;
+  font-weight: 800;
+  color: #123dcc;
+  text-align: center;
+}
+
+.header-buttons {
+  display: flex;
+}
+
+#languageButton {
+  background: white;
+  color: #123dcc;
+  border: 3px solid #9bb8ff;
+  border-radius: 18px;
+  padding: 12px 18px;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+#languageButton:hover {
+  background: #eaf1ff;
+}
+
+/* Student screen */
+
+.student-screen {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 12px 25px 30px;
+  display: flex;
+  flex-direction: column;
+}
+
+.student-screen > h2 {
+  text-align: center;
+  font-size: 26px;
+  color: #142b80;
+  margin-bottom: 2px;
+}
+
+.instruction {
+  text-align: center;
+  font-size: 20px;
+  font-weight: 600;
+  color: #263c91;
+  margin-bottom: 10px;
+}
+
+/* Communication buttons */
+
+.needs-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 12px;
+  width: 100%;
+  /* One light border around the complete group of communication tiles. */
+  border: 3px solid #d5e1ff;
+  border-radius: 20px;
+  padding: 12px;
+}
+
+.need-button {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  padding: 0;
+  border: 4px solid #c9d9ff;
+  border-radius: 18px;
+  background: transparent;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  overflow: hidden;
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.tile-image {
+  width: 100%;
+  height: 78%;
+  display: block;
+  object-fit: contain;
+  object-position: center;
+}
+
+/* Visible name below each picture. JavaScript changes this text by language. */
+.tile-label {
+  height: 22%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #101b52;
+  font-size: 24px;
+  font-weight: 800;
+}
+
+/* First row */
+
+.tile-water {
+  background: #8ee8ff;
+  grid-column: 1 / span 2;
+}
+
+.tile-food {
+  background: #ffe49a;
+  grid-column: 3 / span 2;
+}
+
+.tile-toilet {
+  background: #b9f18c;
+  grid-column: 5 / span 2;
+}
+
+/* Second row - three tiles with the same size as the first row */
+
+.tile-tired {
+  background: #d8e7f8;
+  grid-column: 1 / span 2;
+}
+
+.tile-angry {
+  background: #ffb15e;
+  grid-column: 3 / span 2;
+}
+
+.tile-sleep {
+  background: #bac4fd;
+  grid-column: 5 / span 2;
+}
+
+/* Button effects */
+
+.need-button:hover {
+  transform: translateY(-6px) scale(1.03);
+  border-color: #145cff;
+  box-shadow: 0 10px 20px rgba(20, 60, 160, 0.35);
+}
+
+/* Keep the selected icon clear after it is clicked. */
+.need-button.selected {
+  transform: translateY(-6px) scale(1.03);
+  border-color: #145cff;
+  box-shadow: 0 10px 20px rgba(20, 60, 160, 0.35);
+}
+
+.need-button:active {
+  transform: scale(0.97);
+}
+
+/* Do not animate for users who choose reduced motion in device settings. */
+@media (prefers-reduced-motion: reduce) {
+  .need-button {
+    transition: none;
+  }
+}
+
+.need-button:focus-visible,
+#languageButton:focus-visible,
+#sendButton:focus-visible {
+  outline: 5px solid #145cff;
+  outline-offset: 3px;
+}
+
+/* Message area */
+
+.message-area {
+  margin-top: 20px;
+  background: white;
+  border: 3px solid #d5e1ff;
+  border-radius: 20px;
+  padding: 18px 25px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 20px;
+}
+
+.message-area h2 {
+  font-size: 22px;
+  color: #183da5;
+}
+
+#selectedMessage {
+  grid-column: 1 / -1;
+  min-height: 58px;
+  padding: 14px 20px;
+  background: #eaf1ff;
+  border: 2px solid #9bb8ff;
+  border-radius: 20px;
+  font-size: 21px;
+  font-weight: 600;
+  color: #344277;
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+/* Small point at the bottom makes the selected message look like a speech bubble. */
+#selectedMessage::after {
+  content: "";
+  position: absolute;
+  bottom: -12px;
+  left: 35px;
+  width: 20px;
+  height: 20px;
+  background: #eaf1ff;
+  border-right: 2px solid #9bb8ff;
+  border-bottom: 2px solid #9bb8ff;
+  transform: rotate(45deg);
+}
+/* Send button */
+
+.send-button {
+  grid-column: 2;
+  justify-self: end;
+  min-width: 250px;
+  min-height: 65px;
+  border: none;
+  border-radius: 16px;
+  background: #0a5be7;
+  color: white;
+  font-size: 23px;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 5px 10px rgba(0, 70, 200, 0.25);
+  transition:
+    transform 0.15s ease,
+    background 0.15s ease;
+}
+
+.send-button:hover {
+  background: #064dcc;
+  transform: scale(1.02);
+}
+
+.send-button:active {
+  transform: scale(0.97);
+}
+
+/* Small screens */
+
+@media (max-width: 850px) {
+  .app-header {
+    height: 75px;
+  }
+
+  .app-header h1 {
+    font-size: 28px;
+  }
+
+  .header-buttons {
+    right: 15px;
+  }
+
+  #languageButton {
+    padding: 8px 12px;
+    font-size: 15px;
+  }
+
+  .student-screen {
+    padding: 15px;
+  }
+
+  .needs-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .tile-water,
+  .tile-food,
+  .tile-toilet,
+  .tile-tired,
+  .tile-angry,
+  .tile-sleep {
+    grid-column: auto;
+  }
+
+  .message-area {
+    margin-top: 12px;
+    min-height: 75px;
+    padding: 10px 18px;
+    border-radius: 18px;
+    gap: 15px;
+  }
+
+  .send-button {
+    min-width: 210px;
+    min-height: 55px;
+    border-radius: 14px;
+    font-size: 20px;
+  }
+}
+/* Short screens */
+
+@media (min-width: 851px) and (max-height: 900px) {
+  .app-header {
+    height: 75px;
+  }
+
+  .app-header h1 {
+    font-size: 34px;
+  }
+
+  .student-screen {
+    padding-top: 8px;
+    padding-bottom: 10px;
+  }
+
+  .student-screen > h2 {
+    font-size: 23px;
+  }
+
+  .instruction {
+    font-size: 18px;
+    margin-bottom: 6px;
+  }
+
+  .needs-grid {
+    gap: 8px;
+  }
+
+  .need-button {
+    max-height: 270px;
+  }
+
+  .message-area {
+    margin-top: 10px;
+    padding: 10px 18px;
+  }
+
+  .message-area h2 {
+    font-size: 20px;
+  }
+
+  #selectedMessage {
+    font-size: 18px;
+  }
+
+  .send-button {
+    min-width: 200px;
+    min-height: 55px;
+    font-size: 20px;
+  }
+}

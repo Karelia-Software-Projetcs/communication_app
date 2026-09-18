@@ -1,0 +1,12 @@
+{
+  "main": "index.js",
+  "name": "Communication Aid App",
+  "scripts": {
+  "start": "electron ."
+  },
+
+  "dependencies": {
+    "electron": "44.4.2"
+  }
+
+}

@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Communication Aid Device</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <!-- Student Screen -->
+    <header class="app-header">
+      <h1>Communication Aid</h1>
+      <div class="header-buttons">
+        <button id="languageButton">FI/EN</button>
+      </div>
+    </header>
+
+    <main class="student-screen">
+      <h2>Hello Alex, Welcome</h2>
+      <p class="instruction">What do you want?</p>
+
+      <!-- Communication Buttons -->
+      <section class="needs-grid">
+        <!-- Water -->
+        <button class="need-button tile-water" data-message="Water">
+          <img class="tile-image" src="images/water.png" alt="Water" />
+          <span class="tile-label"></span>
+        </button>
+
+        <!-- Food -->
+        <button class="need-button tile-food" data-message="Food">
+          <img class="tile-image" src="images/food.png" alt="Food" />
+          <span class="tile-label"></span>
+        </button>
+
+        <!-- Toilet -->
+        <button class="need-button tile-toilet" data-message="Toilet">
+          <img class="tile-image" src="images/toilet.png" alt="Toilet" />
+          <span class="tile-label"></span>
+        </button>
+
+        <!-- Tired -->
+        <button class="need-button tile-tired" data-message="Tired">
+          <img class="tile-image" src="images/tired.png" alt="Tired" />
+          <span class="tile-label"></span>
+        </button>
+
+        <!-- Angry -->
+        <button class="need-button tile-angry" data-message="Angry">
+          <img class="tile-image" src="images/angry.png" alt="Angry" />
+          <span class="tile-label"></span>
+        </button>
+
+        <!-- Sleep -->
+        <button class="need-button tile-sleep" data-message="Sleep">
+          <img class="tile-image" src="images/sleep.png" alt="Sleep" />
+          <span class="tile-label"></span>
+        </button>
+      </section>
+
+      <!-- Selected Message -->
+      <section class="message-area">
+        <h2>Your message</h2>
+        <p id="selectedMessage">Tap an icon above to select</p>
+        <button id="sendButton" class="send-button">Send to Teacher</button>
+      </section>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>
