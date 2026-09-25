@@ -3,8 +3,8 @@ const { app, BrowserWindow } = require("electron");
 function createWindow() {
   const win = new BrowserWindow({
     // Create desktop window
-    width: 800,
-    height: 600,
+    width: 950,
+    height: 875,
   });
 
   win.loadFile("index.html"); // Display this HTML file
