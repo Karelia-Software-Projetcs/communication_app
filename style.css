@@ -328,7 +328,7 @@ body {
 
 @media (min-width: 851px) and (max-height: 900px) {
   .app-header {
-    height: 75px;
+    height: 75px; /*change sizes*/
   }
 
   .app-header h1 {
