@@ -17,7 +17,19 @@
     </header>
 
     <main class="student-screen">
-      <h2>Hello Alex, Welcome</h2>
+      <div class="student-selector">
+        <button id="boyButton" class="student-option selected-student">
+           👦 Boy
+        </button>
+
+        <button id="girlButton" class="student-option">
+          👧 Girl
+        </button>
+      </div>
+      <div class="student-profile">
+        <img id="studentImage" src="images/boy.jpg" alt="Boy student" />
+      </div>
+      <h2 id="welcomeMessage">Hello Alex, Welcome</h2>
       <p class="instruction">What do you want?</p>
 
       <!-- Communication Buttons -->
@@ -42,14 +54,14 @@
 
         <!-- Tired -->
         <button class="need-button tile-tired" data-message="Tired">
-          <img class="tile-image" src="images/tired.png" alt="Tired" />
-          <span class="tile-label"></span>
+          <img id="tiredImage" src="images/tired.png" alt="Tired" class="tile-image">
+          <span class="tile-label">Tired</span>
         </button>
 
         <!-- Angry -->
         <button class="need-button tile-angry" data-message="Angry">
-          <img class="tile-image" src="images/angry.png" alt="Angry" />
-          <span class="tile-label"></span>
+          <img id="angryImage" src="images/angry.png" alt="Angry" class="tile-image">
+          <span class="tile-label">Angry</span>
         </button>
 
         <!-- Sleep --> 
