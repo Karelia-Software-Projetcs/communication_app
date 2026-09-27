@@ -1,84 +1,176 @@
-<!doctype html>   
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
     <title>Communication Aid Device</title>
+
     <link rel="stylesheet" href="style.css" />
   </head>
 
   <body>
-    <!-- Student Screen -->
+    <!-- Header -->
     <header class="app-header">
       <h1>Communication Aid</h1>
+
+      <!-- Language and student version buttons -->
       <div class="header-buttons">
         <button id="languageButton">FI/EN</button>
+
+        <div class="student-selector">
+          <button
+            id="boyButton"
+            class="student-option selected-student"
+          >
+            👦 Boy
+          </button>
+
+          <button
+            id="girlButton"
+            class="student-option"
+          >
+            👧 Girl
+          </button>
+        </div>
       </div>
     </header>
 
+    <!-- Student Screen -->
     <main class="student-screen">
-      <div class="student-selector">
-        <button id="boyButton" class="student-option selected-student">
-           👦 Boy
-        </button>
 
-        <button id="girlButton" class="student-option">
-          👧 Girl
-        </button>
-      </div>
+      <!-- Student Profile -->
       <div class="student-profile">
-        <img id="studentImage" src="images/boy.jpg" alt="Boy student" />
+        <img
+          id="studentImage"
+          src="images/boy.jpg"
+          alt="Boy student"
+        />
       </div>
+
+      <!-- Welcome Message -->
       <h2 id="welcomeMessage">Hello Alex, Welcome</h2>
+
+      <!-- Instruction -->
       <p class="instruction">What do you want?</p>
 
+
       <!-- Communication Buttons -->
-      <section class="needs-grid"> <!--used to group related content together.-->
+      <section class="needs-grid">
+
         <!-- Water -->
-        <button class="need-button tile-water" data-message="Water"> <!--data attribute.store the message associated with the button connect to js-->
-          <img class="tile-image" src="images/water.png" alt="Water" />
+        <button
+          class="need-button tile-water"
+          data-message="Water"
+        >
+          <img
+            class="tile-image"
+            src="images/water.png"
+            alt="Water"
+          />
           <span class="tile-label"></span>
         </button>
+
 
         <!-- Food -->
-        <button class="need-button tile-food" data-message="Food">
-          <img class="tile-image" src="images/food.png" alt="Food" />
+        <button
+          class="need-button tile-food"
+          data-message="Food"
+        >
+          <img
+            class="tile-image"
+            src="images/food.png"
+            alt="Food"
+          />
           <span class="tile-label"></span>
         </button>
+
 
         <!-- Toilet -->
-        <button class="need-button tile-toilet" data-message="Toilet">
-          <img class="tile-image" src="images/toilet.png" alt="Toilet" />
+        <button
+          class="need-button tile-toilet"
+          data-message="Toilet"
+        >
+          <img
+            class="tile-image"
+            src="images/toilet.png"
+            alt="Toilet"
+          />
           <span class="tile-label"></span>
         </button>
+
 
         <!-- Tired -->
-        <button class="need-button tile-tired" data-message="Tired">
-          <img id="tiredImage" src="images/tired.png" alt="Tired" class="tile-image">
-          <span class="tile-label">Tired</span>
+        <button
+          class="need-button tile-tired"
+          data-message="Tired"
+        >
+          <img
+            id="tiredImage"
+            class="tile-image"
+            src="images/tired.png"
+            alt="Tired"
+          />
+          <span class="tile-label"></span>
         </button>
+
 
         <!-- Angry -->
-        <button class="need-button tile-angry" data-message="Angry">
-          <img id="angryImage" src="images/angry.png" alt="Angry" class="tile-image">
-          <span class="tile-label">Angry</span>
+        <button
+          class="need-button tile-angry"
+          data-message="Angry"
+        >
+          <img
+            id="angryImage"
+            class="tile-image"
+            src="images/angry.png"
+            alt="Angry"
+          />
+          <span class="tile-label"></span>
         </button>
 
-        <!-- Sleep --> 
-        <!-- <button class="need-button tile-sleep" data-message="Sleep">
-          <img class="tile-image" src="images/sleep.png" alt="Sleep" />
+
+        <!-- Sleep -->
+        <!--
+        <button
+          class="need-button tile-sleep"
+          data-message="Sleep"
+        >
+          <img
+            class="tile-image"
+            src="images/sleep.png"
+            alt="Sleep"
+          />
           <span class="tile-label"></span>
-        </button> -->
+        </button>
+        -->
+
       </section>
+
 
       <!-- Selected Message -->
       <section class="message-area">
+
         <h2>Your message</h2>
-        <p id="selectedMessage">Tap an icon above to select</p>
-        <button id="sendButton" class="send-button">Send to Teacher</button>
+
+        <p id="selectedMessage">
+          Tap an icon above to select
+        </p>
+
+        <button
+          id="sendButton"
+          class="send-button"
+        >
+          Send to Teacher
+        </button>
+
       </section>
+
     </main>
 
+
+    <!-- JavaScript -->
     <script src="script.js"></script>
+
   </body>
 </html>
