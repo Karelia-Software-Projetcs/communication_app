@@ -322,7 +322,7 @@ body {
   transform: scale(0.97);
 }
 
-/* Small screens */
+/* Small screens -responsive*/
 
 @media (max-width: 850px) {
    .app-header {
