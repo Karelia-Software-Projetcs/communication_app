@@ -17,8 +17,8 @@ The initial release is **1.0.0**. The planned improvements for **1.1.0** are lis
 
 ## Screenshots
 
-| English | Finnish |
-| --- | --- |
+| English                                              | Finnish                                              |
+| ---------------------------------------------------- | ---------------------------------------------------- |
 | ![English Communication Aid screen](App_demo_en.png) | ![Finnish Communication Aid screen](App_demo_fi.png) |
 
 ## Run the app
