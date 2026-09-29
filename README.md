@@ -8,7 +8,7 @@ The initial release is **1.0.0**. The planned improvements for **1.1.0** are lis
 
 ## Features in version 1.0.0
 
-- Visual communication tiles for Water, Food, Toilet, Tired, Angry, and Sleep.
+- Five visual communication tiles: Water, Food, Toilet, Tired, and Angry.
 - English and Finnish interface translations.
 - Speech synthesis for the selected need.
 - A visible selected-message area.
