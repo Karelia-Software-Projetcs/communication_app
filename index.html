@@ -12,10 +12,23 @@
   <body>
     <!-- Header -->
     <header class="app-header">
-     <!-- Language and student version buttons -->
+      <!-- The current student's profile and name remain visible at the top. -->
+      <div class="student-summary">
+        <div class="student-profile">
+          <img
+            id="studentImage"
+            src="images/boy.jpg"
+            alt="Boy student"
+          />
+        </div>
+
+        <h2 id="welcomeMessage">Hello Alex, Welcome</h2>
+      </div>
+
+      <!-- Language and student version buttons -->
       <div class="header-buttons">
         <button id="languageButton" class="language-button">
-          EN
+          FI/EN
         </button>
 
         <div class="student-selector"> <!--added gender instead of 2 girl boy buttons-->
@@ -23,22 +36,11 @@
               👦 Boy
           </button>
         </div>
+      </div>
     </header>
 
       <!-- Student Screen -->
     <main class="student-screen">
-
-      <!-- Student Profile -->
-      <div class="student-profile">
-        <img
-          id="studentImage"
-          src="images/boy.jpg"
-          alt="Boy student"
-        />
-      </div>
-
-      <!-- Welcome Message -->
-      <h2 id="welcomeMessage">Hello Alex, Welcome</h2>
 
       <!-- Instruction -->
       <p class="instruction">What do you want?</p>
@@ -54,7 +56,7 @@
         >
           <img
             class="tile-image"
-            src="images/Water.png"
+            src="images/water.png"
             alt="Water"
           />
           <span class="tile-label"></span>

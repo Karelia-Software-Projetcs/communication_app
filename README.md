@@ -65,7 +65,8 @@ Version 1.1.0 will improve personalisation and layout:
 - Remove the app title from the header to create more space for the communication screen.
 - Enable a Boy/Girl toggle button so the student version can be selected.
 - Remove the face from the Water tile image.
-- Improve responsive layouts, including a mobile breakpoint so the tiles and controls fit smaller screens more clearly.
+- Improve responsive layouts, including a mobile breakpoint so the tiles and controls fit smaller screens.
+- Default Electro title/taskbar logo replaced with custom windows icon.
 
 ## Authors
 
