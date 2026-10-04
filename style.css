@@ -220,7 +220,7 @@ body {
   box-shadow: 0 10px 20px rgba(20, 60, 160, 0.35);
 }
 
-/* Keep the selected icon clear after it is clicked. */
+/* Keep the selected icon . */
 .need-button.selected {
   transform: translateY(-6px) scale(1.03);
   border-color: #145cff;
