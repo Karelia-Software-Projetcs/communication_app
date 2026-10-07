@@ -19,7 +19,7 @@ var currentStudent = "boy";
 // Store the selected need. It is empty until the student selects a tile.
 var selectedNeed = "";
 
-// English and Finnish text used by the application.
+// English and Finnish text used by the application, object containing two nested objects.
 var translations = {
   english: {
     welcomeBoy: "Hello Alex, Welcome",
@@ -118,7 +118,7 @@ function changeLanguage() {
     selectedMessage.textContent = pageText[selectedNeed];
   }
 
-  // Update the alt text label for icons.
+  // Update the alt text and label for icons.
   for (imageNumber = 0; imageNumber < needButtons.length; imageNumber++) {
     needName = needButtons[imageNumber]
       .getAttribute("data-message")
