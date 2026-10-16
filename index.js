@@ -1,7 +1,12 @@
-const { app, BrowserWindow } = require("electron");
+const { app, BrowserWindow, Menu } = require("electron");
 const path = require("path");
 
 function createWindow() {
+  //Removing unwanted menu elements
+  const menuTemplate = [{ role: "fileMenu" }, { role: "viewMenu" }];
+
+  Menu.setApplicationMenu(Menu.buildFromTemplate(menuTemplate));
+
   const win = new BrowserWindow({
     // Create desktop window
     width: 950,
