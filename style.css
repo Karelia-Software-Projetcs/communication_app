@@ -31,7 +31,6 @@ body {
   display: flex;
   align-items: center;
   gap: 10px;
-
 }
 .student-selector {
   display: flex;
@@ -73,30 +72,51 @@ body {
   display: flex;
   align-items: center;
   gap: 12px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  text-align: left;
 }
 
 .student-summary .student-profile {
   height: clamp(45px, 7vh, 64px);
 }
 
-.student-summary h2 {
+.welcome-message {
   color: #142b80;
   font-size: clamp(18px, 2.5vh, 26px);
+  font-weight: 700;
   white-space: nowrap;
 }
 
-#languageButton {
+.student-summary:focus-visible {
+  outline: 3px solid #0a5be7;
+  outline-offset: 6px;
+  border-radius: 12px;
+}
+
+.settings-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 52px;
+  padding: 10px 16px;
   background: white;
   color: #123dcc;
   border: 3px solid #9bb8ff;
   border-radius: 18px;
-  padding: 12px 18px;
   font-size: 18px;
-  font-weight: bold;
+  font-weight: 800;
   cursor: pointer;
 }
 
-#languageButton:hover {
+.settings-button span[aria-hidden="true"] {
+  font-size: 24px;
+  line-height: 1;
+}
+
+.settings-button:hover {
   background: #eaf1ff;
 }
 
@@ -105,9 +125,9 @@ body {
 .student-screen {
   width: 100%;
   max-width: 1100px;
-  height:calc(100vh - clamp(60px, 10vh, 95px));
+  height: calc(100vh - clamp(60px, 10vh, 95px));
   margin: 0 auto;
-  padding: 12px 25px ;
+  padding: 12px 25px;
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -207,7 +227,7 @@ body {
   grid-column: 4 / span 2;
 }
 
-  /*.tile-sleep {
+/*.tile-sleep {
   background: #bac4fd;
   grid-column: 5 / span 2;
 }
@@ -239,8 +259,7 @@ body {
 }
 
 .need-button:focus-visible,
-#languageButton:focus-visible,
-#genderButton:focus-visible,
+#settingsButton:focus-visible,
 #sendButton:focus-visible {
   outline: 5px solid #145cff;
   outline-offset: 3px;
@@ -326,29 +345,19 @@ body {
 /* Small screens */
 
 @media (max-width: 850px) {
-   .app-header {
+  .app-header {
     height: 65px;
     padding: 8px 12px;
   }
 
- #languageButton {
-    padding: 6px 10px;
+  .settings-button {
+    min-height: 42px;
+    padding: 6px 9px;
+    gap: 4px;
+    border-width: 2px;
+    border-radius: 12px;
     font-size: 14px;
   }
-  .header-buttons {
-  gap: 5px;
-}
-
-.student-selector {
-  gap: 4px;
-}
-
-  .student-option {
-  padding: 6px 8px;
-  font-size: 13px;
-  border-width: 2px;
-    border-radius: 12px;
-}
 
   .student-summary {
     gap: 6px;
@@ -358,7 +367,7 @@ body {
     height: 42px;
   }
 
-  .student-summary h2 {
+  .welcome-message {
     font-size: 16px;
   }
 
@@ -368,7 +377,7 @@ body {
   }
   .need-button {
     height: 100%;
-  } 
+  }
 
   .needs-grid {
     grid-template-columns: repeat(2, 1fr);
@@ -381,13 +390,14 @@ body {
   .tile-food,
   .tile-toilet,
   .tile-tired,
-  .tile-angry{grid-column: auto;}
-    
-  
   .tile-angry {
-  grid-column: 1 / 3;
-  justify-self: center;
-  width: 50%;
+    grid-column: auto;
+  }
+
+  .tile-angry {
+    grid-column: 1 / 3;
+    justify-self: center;
+    width: 50%;
   }
 
   .message-area {
@@ -411,5 +421,147 @@ body {
     width: 170px;
     min-height: 48px;
     font-size: 16px;
+  }
+}
+
+/* Profile setup is an in-app dialog, so no extra HTML page is required. */
+.profile-dialog {
+  width: min(92vw, 520px);
+  border: 3px solid #9bb8ff;
+  border-radius: 20px;
+  padding: 0;
+  color: #101b52;
+  box-shadow: 0 18px 48px rgba(16, 27, 82, 0.3);
+}
+
+.profile-dialog::backdrop {
+  background: rgba(16, 27, 82, 0.55);
+}
+
+.profile-form {
+  display: grid;
+  gap: 10px;
+  padding: 26px;
+  background: #ffffff;
+}
+
+.profile-form h2 {
+  color: #123dcc;
+  font-size: 25px;
+}
+
+.profile-form p {
+  color: #344277;
+  line-height: 1.4;
+  margin-bottom: 4px;
+}
+
+.profile-form label {
+  font-size: 16px;
+  font-weight: 800;
+  color: #183da5;
+}
+
+.profile-form input,
+.profile-form select {
+  width: 100%;
+  min-height: 46px;
+  padding: 9px 12px;
+  border: 2px solid #9bb8ff;
+  border-radius: 12px;
+  color: #101b52;
+  background: #f7f9ff;
+  font: inherit;
+}
+
+.profile-submit {
+  justify-self: end;
+  min-width: 130px;
+  min-height: 48px;
+  margin-top: 8px;
+  border: none;
+  border-radius: 14px;
+  background: #0a5be7;
+  color: white;
+  font-size: 18px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.profile-required .student-summary {
+  visibility: hidden;
+}
+
+.profile-required .student-screen {
+  opacity: 0.45;
+  pointer-events: none;
+}
+
+.need-button:disabled,
+.send-button:disabled {
+  cursor: not-allowed;
+}
+
+.student-summary-dialog {
+  width: min(420px, calc(100vw - 32px));
+  border: 3px solid #9bb8ff;
+  border-radius: 20px;
+  color: #101b52;
+  box-shadow: 0 18px 48px rgba(16, 27, 82, 0.3);
+}
+
+.student-summary-dialog::backdrop {
+  background: rgba(16, 27, 82, 0.55);
+}
+
+.student-summary-dialog section {
+  padding: 26px;
+}
+
+.student-summary-dialog h2 {
+  color: #123dcc;
+  font-size: 25px;
+}
+
+.student-details {
+  display: grid;
+  gap: 10px;
+  margin: 20px 0;
+}
+
+.student-details div {
+  display: grid;
+  grid-template-columns: 130px 1fr;
+  gap: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #d5e1ff;
+}
+
+.student-details dt {
+  color: #183da5;
+  font-weight: 800;
+}
+
+.student-details dd {
+  margin: 0;
+  font-weight: 600;
+}
+
+.student-summary-dialog .profile-submit {
+  display: block;
+}
+
+@media (max-width: 850px) {
+  .settings-button-text {
+    display: none;
+  }
+
+  .settings-button {
+    min-width: 42px;
+    justify-content: center;
+  }
+
+  .profile-form {
+    padding: 20px;
   }
 }
