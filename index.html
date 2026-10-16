@@ -9,26 +9,24 @@
     <link rel="stylesheet" href="style.css" />
   </head>
 
-  <body>
+  <body class="profile-required">
     <!--header of the app-->
     <header class="app-header">
-      <!-- The current student's profile and name remain visible at the top. -->
-      <div class="student-summary">
-        <div class="student-profile">
+      <!-- The current student's profile and name appear after profile setup. -->
+      <button id="profileSummaryButton" class="student-summary" type="button" aria-haspopup="dialog" aria-label="View student profile">
+        <span class="student-profile">
           <img id="studentImage" src="images/boy.jpg" alt="Boy student" />
-        </div>
+        </span>
 
-        <h2 id="welcomeMessage">Hello Alex, Welcome</h2>
-      </div>
+        <span id="welcomeMessage" class="welcome-message">Profile setup required</span>
+      </button>
 
-      
+      <!-- Settings is the only available action until a profile is saved. -->
       <div class="header-buttons">
-        <button id="languageButton" class="language-button">FI/EN</button>
-
-        <div class="student-selector">
-          <!--added gender instead of 2 girl boy buttons-->
-          <button id="genderButton" class="student-option">👦 Boy</button>
-        </div>
+        <button id="settingsButton" class="settings-button" type="button" aria-label="Open profile setup">
+          <span aria-hidden="true">⚙</span>
+          <span class="settings-button-text">Settings</span>
+        </button>
       </div>
     </header>
 
@@ -41,19 +39,19 @@
       <section class="needs-grid">
         <!-- Water -->
         <button class="need-button tile-water" data-message="Water">
-          <img class="tile-image" src="images/water.png" alt="Water" />
+          <img class="tile-image" src="images/transparent/water.png" alt="Water" />
           <span class="tile-label"></span>
         </button>
 
         <!-- Food -->
         <button class="need-button tile-food" data-message="Food">
-          <img class="tile-image" src="images/food.png" alt="Food" />
+          <img class="tile-image" src="images/transparent/food.png" alt="Food" />
           <span class="tile-label"></span>
         </button>
 
         <!-- Toilet -->
         <button class="need-button tile-toilet" data-message="Toilet">
-          <img class="tile-image" src="images/toilet.png" alt="Toilet" />
+          <img class="tile-image" src="images/transparent/toilet.png" alt="Toilet" />
           <span class="tile-label"></span>
         </button>
 
@@ -62,7 +60,7 @@
           <img
             id="tiredImage"
             class="tile-image"
-            src="images/tired.png"
+            src="images/transparent/tired-boy.png"
             alt="Tired"
           />
           <span class="tile-label"></span>
@@ -73,7 +71,7 @@
           <img
             id="angryImage"
             class="tile-image"
-            src="images/angry.png"
+            src="images/transparent/angry-boy.png"
             alt="Angry"
           />
           <span class="tile-label"></span>
@@ -104,6 +102,50 @@
         <button id="sendButton" class="send-button">Send to Teacher</button>
       </section>
     </main>
+
+    <dialog id="profileDialog" class="profile-dialog" aria-labelledby="profileDialogTitle">
+      <form id="profileForm" class="profile-form">
+        <h2 id="profileDialogTitle">Student profile setup</h2>
+        <p>Enter the student details before using the communication tiles.</p>
+
+        <label for="studentNameInput">Student name</label>
+        <input id="studentNameInput" name="studentName" type="text" autocomplete="name" required />
+
+        <label for="ageInput">Age</label>
+        <input id="ageInput" name="age" type="number" min="1" max="120" inputmode="numeric" required />
+
+        <label for="dateOfBirthInput">Date of birth</label>
+        <input id="dateOfBirthInput" name="dateOfBirth" type="date" required />
+
+        <label for="genderInput">Gender</label>
+        <select id="genderInput" name="gender" required>
+          <option value="boy">Male</option>
+          <option value="girl">Female</option>
+        </select>
+
+        <label for="languageInput">Language</label>
+        <select id="languageInput" name="language" required>
+          <option value="english">English</option>
+          <option value="finnish">Finnish</option>
+        </select>
+
+        <button class="profile-submit" type="submit">OK</button>
+      </form>
+    </dialog>
+
+    <dialog id="studentSummaryDialog" class="student-summary-dialog" aria-labelledby="studentSummaryTitle">
+      <section>
+        <h2 id="studentSummaryTitle">Student profile</h2>
+        <dl class="student-details">
+          <div><dt>Name</dt><dd id="summaryName"></dd></div>
+          <div><dt>Age</dt><dd id="summaryAge"></dd></div>
+          <div><dt>Date of birth</dt><dd id="summaryDateOfBirth"></dd></div>
+          <div><dt>Gender</dt><dd id="summaryGender"></dd></div>
+          <div><dt>Language</dt><dd id="summaryLanguage"></dd></div>
+        </dl>
+        <button id="closeSummaryButton" class="profile-submit" type="button">Close</button>
+      </section>
+    </dialog>
 
     <!-- JavaScript -->
     <script src="script.js"></script>
