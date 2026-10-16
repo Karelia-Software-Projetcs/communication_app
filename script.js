@@ -1,6 +1,12 @@
-// Get the buttons and text areas from the HTML page.
-var languageButton = document.getElementById("languageButton");
-var genderButton = document.getElementById("genderButton");
+// Application elements from index.html.
+var settingsButton = document.getElementById("settingsButton");
+var profileDialog = document.getElementById("profileDialog");
+var profileForm = document.getElementById("profileForm");
+var studentNameInput = document.getElementById("studentNameInput");
+var ageInput = document.getElementById("ageInput");
+var dateOfBirthInput = document.getElementById("dateOfBirthInput");
+var genderInput = document.getElementById("genderInput");
+var languageInput = document.getElementById("languageInput");
 var needButtons = document.querySelectorAll(".need-button");
 var selectedMessage = document.getElementById("selectedMessage");
 var sendButton = document.getElementById("sendButton");
@@ -8,29 +14,30 @@ var welcomeMessage = document.getElementById("welcomeMessage");
 var studentImage = document.getElementById("studentImage");
 var tiredImage = document.getElementById("tiredImage");
 var angryImage = document.getElementById("angryImage");
+var profileSummaryButton = document.getElementById("profileSummaryButton");
+var studentSummaryDialog = document.getElementById("studentSummaryDialog");
+var closeSummaryButton = document.getElementById("closeSummaryButton");
+var summaryName = document.getElementById("summaryName");
+var summaryAge = document.getElementById("summaryAge");
+var summaryDateOfBirth = document.getElementById("summaryDateOfBirth");
+var summaryGender = document.getElementById("summaryGender");
+var summaryLanguage = document.getElementById("summaryLanguage");
 
-// Store the language currently shown on the screen.
+var profileStorageKey = "communicationAidProfile";
 var currentLanguage = "english";
-
-// The boy screen is shown first. The gender button always shows the screen
-// that will be selected next.
 var currentStudent = "boy";
-
-// Store the selected need. It is empty until the student selects a tile.
 var selectedNeed = "";
+var activeAudio = null;
 
-// English and Finnish text used by the application, object containing two nested objects.
+// Text is kept in one place so the selected profile language updates the full screen.
 var translations = {
   english: {
-    welcomeBoy: "Hello Alex, Welcome",
-    welcomeGirl: "Hello Hanna, Welcome",
+    welcome: "Hello {name}, Welcome",
     instruction: "What do you want?",
     messageTitle: "Your message",
     startMessage: "Tap an icon above to select",
     sendButton: "Send to Teacher",
-    sendMessage: "This function is not availble yet.",
-    switchToBoy: "👦 Boy",
-    switchToGirl: "👧 Girl",
+    sendMessage: "This function is not available yet.",
     water: "I need water",
     waterLabel: "Water",
     food: "I need food",
@@ -41,19 +48,14 @@ var translations = {
     tiredLabel: "Tired",
     angry: "I am angry",
     angryLabel: "Angry",
-    sleep: "I need to sleep",
-    sleepLabel: "Sleep",
   },
   finnish: {
-    welcomeBoy: "Hei Alex, tervetuloa",
-    welcomeGirl: "Hei Hanna, tervetuloa",
+    welcome: "Hei {name}, tervetuloa",
     instruction: "Mitä haluat?",
     messageTitle: "Viestisi",
     startMessage: "Valitse yläpuolelta kuvake",
     sendButton: "Lähetä opettajalle",
     sendMessage: "Tämä toiminto ei ole vielä käytettävissä.",
-    switchToBoy: "👦 Poika",
-    switchToGirl: "👧 Tyttö",
     water: "Tarvitsen vettä",
     waterLabel: "Vesi",
     food: "Tarvitsen ruokaa",
@@ -64,145 +66,218 @@ var translations = {
     tiredLabel: "Väsynyt",
     angry: "Olen vihainen",
     angryLabel: "Vihainen",
-    sleep: "Minun täytyy nukkua",
-    sleepLabel: "Nukkumaan",
   },
 };
 
-// Update the student picture and the two need pictures that have boy/girl versions.
+// Each key points to an existing local recording in kids_voices.
+var voiceFiles = {
+  boy: {
+    english: {
+      water: "en_water.mp3",
+      food: "en_food.mp3",
+      toilet: "en_toilet.mp3",
+      tired: "en_tired.mp3",
+      angry: "en_angry.mp3",
+    },
+    finnish: {
+      water: "fi_vesi.mp3",
+      food: "fi_ruoka.mp3",
+      toilet: "fi_vettä.mp3",
+      tired: "fi_väsynyt.mp3",
+      angry: "fi_vihainen.mp3",
+    },
+  },
+  girl: {
+    english: {
+      water: "en_water.mp3",
+      food: "en_food.mp3",
+      toilet: "en_toilet.mp3",
+      tired: "en_tired.mp3",
+      angry: "en_angry.mp3",
+    },
+    finnish: {
+      water: "fi_vesi.mp3",
+      food: "fi_ruokaa.mp3",
+      toilet: "fi_vessa.mp3",
+      tired: "fi_väsynyt.mp3",
+      angry: "fi_vihainen.mp3",
+    },
+  },
+};
+
+function playLocalAudio(filePath) {
+  if (activeAudio) {
+    activeAudio.pause();
+    activeAudio.currentTime = 0;
+  }
+
+  activeAudio = new Audio(filePath);
+  activeAudio.play().catch(function () {
+    // Browsers may block automatic sound until the teacher clicks Settings.
+    // The setup prompt is tried again when the dialog is opened by that click.
+  });
+}
+
+function playTileAudio(needName) {
+  var fileName = voiceFiles[currentStudent][currentLanguage][needName];
+
+  if (fileName) {
+    playLocalAudio("kids_voices/" + currentStudent + "/" + fileName);
+  }
+}
+
 function changeStudentImages() {
   if (currentStudent === "boy") {
     studentImage.src = "images/boy.jpg";
     studentImage.alt = "Boy student";
-    tiredImage.src = "images/tired.png";
-    angryImage.src = "images/angry.png";
+    tiredImage.src = "images/transparent/tired-boy.png";
+    angryImage.src = "images/transparent/angry-boy.png";
   } else {
     studentImage.src = "images/girl.jpg";
     studentImage.alt = "Girl student";
-    tiredImage.src = "images/tired-girl.jpg";
-    angryImage.src = "images/angry-girl.jpg";
+    tiredImage.src = "images/transparent/tired-girl.png";
+    angryImage.src = "images/transparent/angry-girl.png";
   }
 }
 
-// The button label describes the screen that clicking it will load next.
-function changeGenderButtonText(pageText) {
-  if (currentStudent === "boy") {
-    genderButton.textContent = pageText.switchToGirl;
-    genderButton.setAttribute("aria-label", "Switch to girl screen");
-  } else {
-    genderButton.textContent = pageText.switchToBoy;
-    genderButton.setAttribute("aria-label", "Switch to boy screen");
-  }
-}
-
-// Change all normal screen text and the image descriptions.
-function changeLanguage() {
+function updateScreenText(studentName) {
   var pageText = translations[currentLanguage];
   var imageNumber;
   var needName;
 
-  if (currentStudent === "boy") {
-    welcomeMessage.textContent = pageText.welcomeBoy;
-  } else {
-    welcomeMessage.textContent = pageText.welcomeGirl;
-  }
+  welcomeMessage.textContent = pageText.welcome.replace("{name}", studentName);
   document.querySelector(".instruction").textContent = pageText.instruction;
-  document.querySelector(".message-area h2").textContent =
-    pageText.messageTitle;
+  document.querySelector(".message-area h2").textContent = pageText.messageTitle;
   sendButton.textContent = pageText.sendButton;
 
-  // Update the selected sentence, or show the starting instruction.
   if (selectedNeed === "") {
     selectedMessage.textContent = pageText.startMessage;
   } else {
     selectedMessage.textContent = pageText[selectedNeed];
   }
 
-  // Update the alt text and label for icons.
   for (imageNumber = 0; imageNumber < needButtons.length; imageNumber++) {
-    needName = needButtons[imageNumber]
-      .getAttribute("data-message")
-      .toLowerCase();
-    needButtons[imageNumber].querySelector("img").alt = pageText[needName]; //helps screen readers.
-    needButtons[imageNumber].querySelector(".tile-label").textContent =
-      pageText[needName + "Label"];
+    needName = needButtons[imageNumber].getAttribute("data-message").toLowerCase();
+    needButtons[imageNumber].querySelector("img").alt = pageText[needName];
+    needButtons[imageNumber].querySelector(".tile-label").textContent = pageText[needName + "Label"];
   }
-
-  // Show the language that the button will change to.
-  if (currentLanguage === "english") {
-    languageButton.textContent = "FI";
-  } else {
-    languageButton.textContent = "EN";
-  }
-
-  changeGenderButtonText(pageText);
 }
 
-// Read the selected sentence aloud using the browser's speech feature.
-function playAudio(message) {
-  var speech = new SpeechSynthesisUtterance(message);
+function setAppEnabled(isEnabled) {
+  var buttonNumber;
 
-  if (currentLanguage === "finnish") {
-    speech.lang = "fi-FI";
-  } else {
-    speech.lang = "en-US";
+  for (buttonNumber = 0; buttonNumber < needButtons.length; buttonNumber++) {
+    needButtons[buttonNumber].disabled = !isEnabled;
   }
-
-  speech.pitch = 1.5;
-  speech.rate = 0.5;
-
-  window.speechSynthesis.cancel();
-  window.speechSynthesis.speak(speech);
+  sendButton.disabled = !isEnabled;
+  document.body.classList.toggle("profile-required", !isEnabled);
 }
 
-// Switch between English and Finnish when the language button is clicked.
-languageButton.addEventListener("click", function () {
-  if (currentLanguage === "english") {
-    currentLanguage = "finnish";
-  } else {
-    currentLanguage = "english";
-  }
+function fillProfileForm(profile) {
+  studentNameInput.value = profile.name || "";
+  ageInput.value = profile.age || "";
+  dateOfBirthInput.value = profile.dateOfBirth || "";
+  genderInput.value = profile.gender || "boy";
+  languageInput.value = profile.language || "english";
+}
 
-  changeLanguage();
-});
-
-// Switch between the boy and girl versions of the screen.
-genderButton.addEventListener("click", function () {
-  if (currentStudent === "boy") {
-    currentStudent = "girl";
-  } else {
-    currentStudent = "boy";
-  }
-
+function applyProfile(profile) {
+  currentLanguage = profile.language;
+  currentStudent = profile.gender;
+  selectedNeed = "";
   changeStudentImages();
-  changeLanguage();
+  updateScreenText(profile.name);
+  updateProfileSummary(profile);
+  setAppEnabled(true);
+}
+
+function updateProfileSummary(profile) {
+  summaryName.textContent = profile.name;
+  summaryAge.textContent = profile.age;
+  summaryDateOfBirth.textContent = profile.dateOfBirth;
+  summaryGender.textContent = profile.gender === "girl" ? "Female" : "Male";
+  summaryLanguage.textContent = profile.language === "finnish" ? "Finnish" : "English";
+}
+
+function openProfileSetup(playSetupPrompt) {
+  var savedProfile = localStorage.getItem(profileStorageKey);
+
+  if (savedProfile) {
+    fillProfileForm(JSON.parse(savedProfile));
+  }
+  if (!profileDialog.open) {
+    profileDialog.showModal();
+  }
+  if (playSetupPrompt) {
+    playLocalAudio("kids_voices/user_profile_setup.mp3");
+  }
+}
+
+function loadSavedProfile() {
+  var savedProfile = localStorage.getItem(profileStorageKey);
+
+  if (savedProfile) {
+    applyProfile(JSON.parse(savedProfile));
+    return;
+  }
+
+  // A new device has no student selected yet. The teacher opens Settings to begin.
+  setAppEnabled(false);
+}
+
+settingsButton.addEventListener("click", function () {
+  openProfileSetup(true);
 });
 
-// Display and speak the message when a student selects a need tile.
+profileSummaryButton.addEventListener("click", function () {
+  if (localStorage.getItem(profileStorageKey) && !studentSummaryDialog.open) {
+    studentSummaryDialog.showModal();
+  }
+});
+
+closeSummaryButton.addEventListener("click", function () {
+  studentSummaryDialog.close();
+});
+
+profileForm.addEventListener("submit", function (event) {
+  var profile;
+
+  event.preventDefault();
+  if (!profileForm.checkValidity()) {
+    profileForm.reportValidity();
+    return;
+  }
+
+  profile = {
+    name: studentNameInput.value.trim(),
+    age: ageInput.value,
+    dateOfBirth: dateOfBirthInput.value,
+    gender: genderInput.value,
+    language: languageInput.value,
+  };
+
+  localStorage.setItem(profileStorageKey, JSON.stringify(profile));
+  applyProfile(profile);
+  profileDialog.close();
+});
+
 for (var buttonNumber = 0; buttonNumber < needButtons.length; buttonNumber++) {
   needButtons[buttonNumber].addEventListener("click", function () {
-    // Remove the highlight from every icon.
-    for (
-      var selectedButtonNumber = 0;
-      selectedButtonNumber < needButtons.length;
-      selectedButtonNumber++
-    ) {
+    var selectedButtonNumber;
+
+    for (selectedButtonNumber = 0; selectedButtonNumber < needButtons.length; selectedButtonNumber++) {
       needButtons[selectedButtonNumber].classList.remove("selected");
     }
 
-    // Add the highlight to the icon that was clicked.
     this.classList.add("selected");
     selectedNeed = this.getAttribute("data-message").toLowerCase();
     selectedMessage.textContent = translations[currentLanguage][selectedNeed];
-    playAudio(translations[currentLanguage][selectedNeed]);
+    playTileAudio(selectedNeed);
   });
 }
 
-// Stage 1 only: the message is not sent to a teacher yet.
 sendButton.addEventListener("click", function () {
   alert(translations[currentLanguage].sendMessage);
 });
 
-// Set the default boy screen and English text when the page opens.
-changeStudentImages();
-changeLanguage();
+loadSavedProfile();
