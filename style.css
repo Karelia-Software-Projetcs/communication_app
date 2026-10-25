@@ -67,16 +67,18 @@ body {
   border-radius: 50%;
 }
 
-/* Student information uses the same left alignment as the former app title. */
+/* 2026-10-25, v1.3: keep picture and greeting aligned, but only the picture is a button. */
 .student-summary {
   display: flex;
   align-items: center;
   gap: 12px;
+}
+
+.profile-picture-button {
   padding: 0;
   border: 0;
   background: transparent;
   cursor: pointer;
-  text-align: left;
 }
 
 .student-summary .student-profile {
@@ -90,7 +92,7 @@ body {
   white-space: nowrap;
 }
 
-.student-summary:focus-visible {
+.profile-picture-button:focus-visible {
   outline: 3px solid #0a5be7;
   outline-offset: 6px;
   border-radius: 12px;
@@ -259,7 +261,6 @@ body {
 }
 
 .need-button:focus-visible,
-#settingsButton:focus-visible,
 #sendButton:focus-visible {
   outline: 5px solid #145cff;
   outline-offset: 3px;
@@ -425,9 +426,12 @@ body {
   }
 }
 
-/* Profile setup is an in-app dialog, so no extra HTML page is required. */
+/* 2026-10-25, v1.3: keep profile dialogs centered and scrollable on short screens. */
 .profile-dialog {
   width: min(92vw, 520px);
+  max-height: 95dvh;
+  overflow-y: auto;
+  margin: auto;
   border: 3px solid #9bb8ff;
   border-radius: 20px;
   padding: 0;
@@ -489,6 +493,34 @@ body {
   cursor: pointer;
 }
 
+/* 2026-10-25, v1.3: shared Save, Cancel, Close and Edit Profile controls. */
+.profile-actions {
+  display: flex;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.profile-secondary {
+  min-width: 110px;
+  min-height: 48px;
+  margin-top: 8px;
+  padding: 8px 16px;
+  border: 2px solid #9bb8ff;
+  border-radius: 14px;
+  background: white;
+  color: #123dcc;
+  font-size: 18px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.profile-submit:focus-visible,
+.profile-secondary:focus-visible {
+  outline: 3px solid #145cff;
+  outline-offset: 3px;
+}
+
 .profile-required .student-summary {
   visibility: hidden;
 }
@@ -505,6 +537,9 @@ body {
 
 .student-summary-dialog {
   width: min(420px, calc(100vw - 32px));
+  max-height: 95dvh;
+  overflow-y: auto;
+  margin: auto;
   border: 3px solid #9bb8ff;
   border-radius: 20px;
   color: #101b52;
@@ -566,12 +601,8 @@ body {
     padding: 20px;
   }
 }
-/* Hide the bottom message section without deleting its HTML or comments */
+/* Team layout: keep the bottom message section hidden without deleting its HTML. */
   .student-screen .message-area {
-    display: none !important;
-}
-  /* Hide the Settings button */
-  #settingsButton {
     display: none !important;
 }
 
