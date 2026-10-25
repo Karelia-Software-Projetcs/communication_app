@@ -4,18 +4,18 @@ An Electron desktop communication aid for students who benefit from selecting cl
 
 ## Version
 
-The current release is **1.2.0**. It builds on the original 1.0.0 interface with profile setup, local recorded audio, and transparent tile artwork.
+The current version is **1.3.0**. It builds on the original 1.0.0 interface with profile setup, local recorded audio, and transparent tile artwork.
 
-## Features in version 1.0.0
+## Current features
 
 - Five visual communication tiles: Water, Food, Toilet, Tired, and Angry.
 - A teacher profile-setup dialog for student name, age, date of birth, gender, and language.
 - English and Finnish interface translations selected from the saved profile.
 - Local boy/girl voice recordings for each active tile in both languages.
 - A first-time setup prompt using `kids_voices/user_profile_setup.mp3`.
-- A settings button that reopens the saved student profile.
-- A visible selected-message area.
-- A "Send to Teacher" button that currently shows an availability message; it does not yet send a message.
+- The student picture opens a profile summary with an option to edit the profile.
+- Age is calculated automatically from the student's date of birth.
+- The selected-message area is hidden and "Send to Teacher" is disabled.
 - Electron desktop application window.
 
 ## Screenshots
@@ -42,11 +42,11 @@ npm start
 
 ## How to use
 
-1. Select **Settings** and enter the student profile details.
-2. Select **OK** to load the matching profile image, language, and local voice recordings.
-3. Select a need tile to display and play the selected message.
-4. Select **Settings** again whenever the profile needs to be changed.
-5. Select **Send to Teacher** to see the current placeholder notification.
+1. On first use, enter the student details in the profile setup dialog. Age is calculated from the date of birth.
+2. Select **Save** to load the matching profile image, language, and local voice recordings.
+3. Select a need tile to play its recorded message.
+4. Select the student picture to view the profile and choose **Edit Profile** to change it.
+5. The message area is hidden and **Send to Teacher** is disabled.
 
 ## Project structure
 
@@ -89,6 +89,17 @@ Roshan, Darshika, and Nimesha.
 - Saved the student profile locally so the selected profile loads when the app opens again.
 - Added a clickable student profile image and welcome message that display a summary of the saved student details.
 - Added local boy and girl voice recordings for every need tile in English and Finnish.
-- Added `user_profile_setup.mp3`, which plays when the teacher opens the Settings form.
+- Added `user_profile_setup.mp3` for the profile setup prompt.
 - Added transparent tile-image versions so the Water, Food, Toilet, Tired, and Angry tile colours are clearly visible.
 - Simplified the Electron menu bar by removing the **Edit** and **Window** menus while keeping **File** and **View**.
+
+## Version 1.3.0 changes
+
+Changes dated 25 October 2026:
+
+- Open profile setup automatically when no saved student profile exists.
+- Remove the Settings button; view and edit the saved profile through the student picture.
+- Calculate the read-only age from the date of birth, including when an existing profile is reopened.
+- Play the setup voice prompt only during initial profile setup; if autoplay is blocked, retry on the teacher's first interaction.
+- Keep the message area hidden and Send to Teacher disabled, as requested by the lecturer.
+- Preserve the team's updated tile images, alignment, and Water/Tired background colours.

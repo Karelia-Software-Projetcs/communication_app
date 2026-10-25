@@ -2,7 +2,7 @@
   "authors": "Roshan, Darshika, Nimesha",
   "main": "index.js",
   "name": "Communication Aid App",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "scripts": {
     "start": "electron ."
   },
