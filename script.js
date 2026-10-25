@@ -83,9 +83,10 @@ var voiceFiles = {
       angry: "en_angry.mp3",
     },
     finnish: {
-      water: "fi_vesi.mp3",
+      // These two boy recordings are named differently from the needs they say.
+      water: "fi_vettä.mp3",
       food: "fi_ruoka.mp3",
-      toilet: "fi_vettä.mp3",
+      toilet: "fi_vesi.mp3",
       tired: "fi_väsynyt.mp3",
       angry: "fi_vihainen.mp3",
     },
