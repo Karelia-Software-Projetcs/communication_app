@@ -12,22 +12,15 @@
   <body class="profile-required">
     <!--header of the app-->
     <header class="app-header">
-      <!-- The current student's profile and name appear after profile setup. -->
-      <button id="profileSummaryButton" class="student-summary" type="button" aria-haspopup="dialog" aria-label="View student profile">
-        <span class="student-profile">
+      <!-- 2026-10-25, v1.3: only the picture opens the profile; the greeting is separate text. -->
+      <div class="student-summary">
+        <button id="profileSummaryButton" class="student-profile profile-picture-button" type="button" aria-haspopup="dialog" aria-label="View student profile">
           <img id="studentImage" src="images/boy.jpg" alt="Boy student" />
-        </span>
+        </button>
 
         <span id="welcomeMessage" class="welcome-message">Profile setup required</span>
-      </button>
-
-      <!-- Settings is the only available action until a profile is saved. -->
-      <div class="header-buttons">
-        <button id="settingsButton" class="settings-button" type="button" aria-label="Open profile setup">
-          <span aria-hidden="true">⚙</span>
-          <span class="settings-button-text">Settings</span>
-        </button>
       </div>
+
     </header>
 
     <!-- Student Screen -->
@@ -99,10 +92,12 @@
 
         <p id="selectedMessage">Tap an icon above to select</p>
 
-        <button id="sendButton" class="send-button">Send to Teacher</button>
+        <!-- 2026-10-25, v1.3: sending stays disabled in response to lecturer feedback. -->
+        <button id="sendButton" class="send-button" type="button" disabled>Send to Teacher</button>
       </section>
     </main>
 
+    <!-- 2026-10-25, v1.3: initial setup and subsequent edits share this form. -->
     <dialog id="profileDialog" class="profile-dialog" aria-labelledby="profileDialogTitle">
       <form id="profileForm" class="profile-form">
         <h2 id="profileDialogTitle">Student profile setup</h2>
@@ -111,8 +106,10 @@
         <label for="studentNameInput">Student name</label>
         <input id="studentNameInput" name="studentName" type="text" autocomplete="name" required />
 
+        <!-- 2026-10-25, v1.3: age is calculated from the birth date and cannot be edited. -->
         <label for="ageInput">Age</label>
-        <input id="ageInput" name="age" type="number" min="1" max="120" inputmode="numeric" required />
+        <input id="ageInput" name="age" type="number" readonly aria-describedby="ageHelp" />
+        <p id="ageHelp">Calculated automatically from the date of birth.</p>
 
         <label for="dateOfBirthInput">Date of birth</label>
         <input id="dateOfBirthInput" name="dateOfBirth" type="date" required />
@@ -129,10 +126,14 @@
           <option value="finnish">Finnish</option>
         </select>
 
-        <button class="profile-submit" type="submit">OK</button>
+        <div class="profile-actions">
+          <button id="cancelProfileButton" class="profile-secondary" type="button" hidden>Cancel</button>
+          <button class="profile-submit" type="submit">Save</button>
+        </div>
       </form>
     </dialog>
 
+    <!-- 2026-10-25, v1.3: the saved profile can be viewed and edited from the picture. -->
     <dialog id="studentSummaryDialog" class="student-summary-dialog" aria-labelledby="studentSummaryTitle">
       <section>
         <h2 id="studentSummaryTitle">Student profile</h2>
@@ -143,7 +144,10 @@
           <div><dt>Gender</dt><dd id="summaryGender"></dd></div>
           <div><dt>Language</dt><dd id="summaryLanguage"></dd></div>
         </dl>
-        <button id="closeSummaryButton" class="profile-submit" type="button">Close</button>
+        <div class="profile-actions">
+          <button id="closeSummaryButton" class="profile-secondary" type="button">Close</button>
+          <button id="editProfileButton" class="profile-submit" type="button">Edit Profile</button>
+        </div>
       </section>
     </dialog>
 
