@@ -1,5 +1,0 @@
-Repo link
-https://github.com/Karelia-Software-Projetcs/communication_app
-
-Demo link
-https://karelia-software-projetcs.github.io/communication_app/
