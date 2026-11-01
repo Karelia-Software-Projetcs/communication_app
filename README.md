@@ -103,3 +103,23 @@ Changes dated 25 October 2026:
 - Play the setup voice prompt only during initial profile setup; if autoplay is blocked, retry on the teacher's first interaction.
 - Keep the message area hidden and Send to Teacher disabled, as requested by the lecturer.
 - Preserve the team's updated tile images, alignment, and Water/Tired background colours.
+
+## Version 1.4.0 changes
+
+Changes dated 31 October 2026:
+
+- Improved the Student Profile screen:
+  - The profile picture opens a read-only summary of the student's details.
+  - Selecting **Edit Profile** keeps the same Student Profile window open.
+  - Profile values change into editable controls in the same positions.
+  - **Cancel** discards changes and returns to the read-only profile view.
+  - **Save** updates the profile, interface language, welcome message, and student images.
+
+- Added teacher password verification:
+  - Students can view their profile information.
+  - A password is required before editing student information.
+  - This helps prevent accidental profile changes by students.
+
+- Added an About menu in the Electron window:
+  - The application menu now includes **File**, **View**, and **About**.
+  - The About window provides a short introduction to the Communication Aid application.

@@ -1,0 +1,11 @@
+Repo link
+https://github.com/Karelia-Software-Projetcs/communication_app
+
+Demo link
+https://karelia-software-projetcs.github.io/communication_app/
+
+
+Profile Reset Commands in the Console
+--------------------------------------
+localStorage.removeItem("communicationAidProfile");
+location.reload();

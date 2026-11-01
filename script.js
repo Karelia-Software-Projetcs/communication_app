@@ -19,11 +19,30 @@ var profileSummaryButton = document.getElementById("profileSummaryButton");
 var studentSummaryDialog = document.getElementById("studentSummaryDialog");
 var closeSummaryButton = document.getElementById("closeSummaryButton");
 var editProfileButton = document.getElementById("editProfileButton");
+
 var summaryName = document.getElementById("summaryName");
 var summaryAge = document.getElementById("summaryAge");
 var summaryDateOfBirth = document.getElementById("summaryDateOfBirth");
 var summaryGender = document.getElementById("summaryGender");
 var summaryLanguage = document.getElementById("summaryLanguage");
+
+var editName = document.getElementById("editName");
+var editAge = document.getElementById("editAge");
+var editDateOfBirth = document.getElementById("editDateOfBirth");
+var editGender = document.getElementById("editGender");
+var editLanguage = document.getElementById("editLanguage");
+var cancelEditButton = document.getElementById("cancelEditButton");
+var saveEditButton = document.getElementById("saveEditButton");
+
+// 2026.10.31 - Teacher password dialog control variables
+var teacherPasswordDialog = document.getElementById("teacherPasswordDialog");
+var teacherPasswordForm = document.getElementById("teacherPasswordForm");
+var teacherPasswordInput = document.getElementById("teacherPasswordInput");
+var teacherPasswordError = document.getElementById("teacherPasswordError");
+var cancelPasswordButton = document.getElementById("cancelPasswordButton");
+
+//teacher passward state variable
+var teacherPassword = "Test123";
 
 var profileStorageKey = "communicationAidProfile";
 var currentLanguage = "english";
@@ -126,7 +145,11 @@ function playInitialSetupPrompt() {
   setupPromptAudio = new Audio("kids_voices/user_profile_setup.mp3");
   activeAudio = setupPromptAudio;
   setupPromptAudio.play().catch(function (error) {
-    if (error.name === "NotAllowedError" && profileDialog.open && !localStorage.getItem(profileStorageKey)) {
+    if (
+      error.name === "NotAllowedError" &&
+      profileDialog.open &&
+      !localStorage.getItem(profileStorageKey)
+    ) {
       document.addEventListener("pointerdown", retrySetupPrompt, true);
       document.addEventListener("keydown", retrySetupPrompt, true);
     }
@@ -174,7 +197,8 @@ function updateScreenText(studentName) {
 
   welcomeMessage.textContent = pageText.welcome.replace("{name}", studentName);
   document.querySelector(".instruction").textContent = pageText.instruction;
-  document.querySelector(".message-area h2").textContent = pageText.messageTitle;
+  document.querySelector(".message-area h2").textContent =
+    pageText.messageTitle;
   sendButton.textContent = pageText.sendButton;
 
   if (selectedNeed === "") {
@@ -184,9 +208,12 @@ function updateScreenText(studentName) {
   }
 
   for (imageNumber = 0; imageNumber < needButtons.length; imageNumber++) {
-    needName = needButtons[imageNumber].getAttribute("data-message").toLowerCase();
+    needName = needButtons[imageNumber]
+      .getAttribute("data-message")
+      .toLowerCase();
     needButtons[imageNumber].querySelector("img").alt = pageText[needName];
-    needButtons[imageNumber].querySelector(".tile-label").textContent = pageText[needName + "Label"];
+    needButtons[imageNumber].querySelector(".tile-label").textContent =
+      pageText[needName + "Label"];
   }
 }
 
@@ -203,7 +230,13 @@ function setAppEnabled(isEnabled) {
 
 function todayAsInputDate() {
   var today = new Date();
-  return today.getFullYear() + "-" + String(today.getMonth() + 1).padStart(2, "0") + "-" + String(today.getDate()).padStart(2, "0");
+  return (
+    today.getFullYear() +
+    "-" +
+    String(today.getMonth() + 1).padStart(2, "0") +
+    "-" +
+    String(today.getDate()).padStart(2, "0")
+  );
 }
 
 // 2026-10-25, v1.3: calculate completed years locally and reject future/invalid dates.
@@ -220,13 +253,20 @@ function calculateAge(dateOfBirth) {
   var month = Number(parts[1]);
   var day = Number(parts[2]);
   var birthDate = new Date(year, month - 1, day);
-  if (birthDate.getFullYear() !== year || birthDate.getMonth() !== month - 1 || birthDate.getDate() !== day) {
+  if (
+    birthDate.getFullYear() !== year ||
+    birthDate.getMonth() !== month - 1 ||
+    birthDate.getDate() !== day
+  ) {
     return null;
   }
 
   var today = new Date();
   var age = today.getFullYear() - year;
-  if (today.getMonth() + 1 < month || (today.getMonth() + 1 === month && today.getDate() < day)) {
+  if (
+    today.getMonth() + 1 < month ||
+    (today.getMonth() + 1 === month && today.getDate() < day)
+  ) {
     age--;
   }
   return age;
@@ -249,7 +289,11 @@ function applyProfile(profile) {
   currentLanguage = profile.language;
   currentStudent = profile.gender;
   selectedNeed = "";
-  for (var buttonNumber = 0; buttonNumber < needButtons.length; buttonNumber++) {
+  for (
+    var buttonNumber = 0;
+    buttonNumber < needButtons.length;
+    buttonNumber++
+  ) {
     needButtons[buttonNumber].classList.remove("selected");
   }
   changeStudentImages();
@@ -264,7 +308,54 @@ function updateProfileSummary(profile) {
   summaryAge.textContent = age === null ? "-" : age;
   summaryDateOfBirth.textContent = profile.dateOfBirth;
   summaryGender.textContent = profile.gender === "girl" ? "Female" : "Male";
-  summaryLanguage.textContent = profile.language === "finnish" ? "Finnish" : "English";
+  summaryLanguage.textContent =
+    profile.language === "finnish" ? "Finnish" : "English";
+}
+
+function updateSummaryEditAge() {
+  var age = calculateAge(editDateOfBirth.value);
+
+  editAge.value = age === null ? "" : age;
+}
+
+function showProfileEditMode() {
+  var savedProfile = JSON.parse(localStorage.getItem(profileStorageKey));
+
+  editName.value = savedProfile.name;
+  editDateOfBirth.value = savedProfile.dateOfBirth;
+  editGender.value = savedProfile.gender;
+  editLanguage.value = savedProfile.language;
+
+  editDateOfBirth.max = todayAsInputDate();
+  updateSummaryEditAge();
+
+  document.querySelectorAll(".profile-value").forEach(function (value) {
+    value.hidden = true;
+  });
+
+  document.querySelectorAll(".profile-edit-field").forEach(function (field) {
+    field.hidden = false;
+  });
+
+  closeSummaryButton.hidden = true;
+  editProfileButton.hidden = true;
+  cancelEditButton.hidden = false;
+  saveEditButton.hidden = false;
+}
+
+function showProfileViewMode() {
+  document.querySelectorAll(".profile-value").forEach(function (value) {
+    value.hidden = false;
+  });
+
+  document.querySelectorAll(".profile-edit-field").forEach(function (field) {
+    field.hidden = true;
+  });
+
+  closeSummaryButton.hidden = false;
+  editProfileButton.hidden = false;
+  cancelEditButton.hidden = true;
+  saveEditButton.hidden = true;
 }
 
 // 2026-10-25, v1.3: reuse the profile form for first-time setup and later editing.
@@ -272,7 +363,9 @@ function openProfileSetup(isInitialSetup) {
   var savedProfile = localStorage.getItem(profileStorageKey);
 
   dateOfBirthInput.max = todayAsInputDate();
-  profileDialogTitle.textContent = isInitialSetup ? "Student profile setup" : "Edit student profile";
+  profileDialogTitle.textContent = isInitialSetup
+    ? "Student profile setup"
+    : "Edit student profile";
   cancelProfileButton.hidden = isInitialSetup;
   if (savedProfile) {
     fillProfileForm(JSON.parse(savedProfile));
@@ -313,9 +406,40 @@ closeSummaryButton.addEventListener("click", function () {
 });
 
 // 2026-10-25, v1.3: edit the profile from its summary without replaying the setup voice.
-editProfileButton.addEventListener("click", function () {
+/*editProfileButton.addEventListener("click", function () {
   studentSummaryDialog.close();
   openProfileSetup(false);
+});*/
+
+/*
+editProfileButton.addEventListener("click", function () {
+  showProfileEditMode();
+});*/
+
+//2026-10-31 passowrd handling function
+editProfileButton.addEventListener("click", function () {
+  teacherPasswordInput.value = "";
+  teacherPasswordError.hidden = true;
+  teacherPasswordDialog.showModal();
+  teacherPasswordInput.focus();
+});
+
+cancelPasswordButton.addEventListener("click", function () {
+  teacherPasswordDialog.close();
+});
+
+//2026-10-31 passowrd checking logic
+teacherPasswordForm.addEventListener("submit", function (event) {
+  event.preventDefault();
+
+  if (teacherPasswordInput.value !== teacherPassword) {
+    teacherPasswordError.hidden = false;
+    teacherPasswordInput.select();
+    return;
+  }
+
+  teacherPasswordDialog.close();
+  showProfileEditMode();
 });
 
 cancelProfileButton.addEventListener("click", function () {
@@ -331,8 +455,14 @@ profileDialog.addEventListener("cancel", function (event) {
 
 dateOfBirthInput.addEventListener("input", updateAgeInput);
 dateOfBirthInput.addEventListener("change", updateAgeInput);
+editDateOfBirth.addEventListener("input", updateSummaryEditAge);
+editDateOfBirth.addEventListener("change", updateSummaryEditAge);
 studentNameInput.addEventListener("input", function () {
   studentNameInput.setCustomValidity("");
+});
+
+cancelEditButton.addEventListener("click", function () {
+  showProfileViewMode();
 });
 
 profileForm.addEventListener("submit", function (event) {
@@ -341,7 +471,9 @@ profileForm.addEventListener("submit", function (event) {
   event.preventDefault();
   dateOfBirthInput.max = todayAsInputDate();
   updateAgeInput();
-  studentNameInput.setCustomValidity(studentNameInput.value.trim() ? "" : "Please enter a student name.");
+  studentNameInput.setCustomValidity(
+    studentNameInput.value.trim() ? "" : "Please enter a student name.",
+  );
   if (!profileForm.checkValidity()) {
     profileForm.reportValidity();
     return;
@@ -365,11 +497,37 @@ profileForm.addEventListener("submit", function (event) {
   profileDialog.close();
 });
 
+// Save profile edits directly in the open student summary dialog.
+saveEditButton.addEventListener("click", function () {
+  var profile;
+
+  if (!editName.value.trim() || !editDateOfBirth.value) {
+    alert("Please enter the student name and date of birth.");
+    return;
+  }
+
+  profile = {
+    name: editName.value.trim(),
+    age: editAge.value,
+    dateOfBirth: editDateOfBirth.value,
+    gender: editGender.value,
+    language: editLanguage.value,
+  };
+
+  localStorage.setItem(profileStorageKey, JSON.stringify(profile));
+  applyProfile(profile);
+  showProfileViewMode();
+});
+
 for (var buttonNumber = 0; buttonNumber < needButtons.length; buttonNumber++) {
   needButtons[buttonNumber].addEventListener("click", function () {
     var selectedButtonNumber;
 
-    for (selectedButtonNumber = 0; selectedButtonNumber < needButtons.length; selectedButtonNumber++) {
+    for (
+      selectedButtonNumber = 0;
+      selectedButtonNumber < needButtons.length;
+      selectedButtonNumber++
+    ) {
       needButtons[selectedButtonNumber].classList.remove("selected");
     }
 
