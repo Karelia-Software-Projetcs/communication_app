@@ -126,7 +126,10 @@
     >
       <form id="profileForm" class="profile-form">
         <h2 id="profileDialogTitle">Student profile setup</h2>
-        <p>Enter the student details before using the communication tiles.</p>
+        <!-- 2026-11-04, v1.4: one dialog is reused for setup, view and teacher edit modes. -->
+        <p id="profileDialogDescription">
+          Enter the student details before using the communication tiles.
+        </p>
 
         <label for="studentNameInput">Student name</label>
         <input
@@ -165,6 +168,24 @@
 
         <div class="profile-actions">
           <button
+            id="closeProfileButton"
+            class="profile-secondary"
+            type="button"
+            hidden
+          >
+            Close
+          </button>
+
+          <button
+            id="editProfileButton"
+            class="profile-submit"
+            type="button"
+            hidden
+          >
+            Edit Profile
+          </button>
+
+          <button
             id="cancelProfileButton"
             class="profile-secondary"
             type="button"
@@ -172,13 +193,16 @@
           >
             Cancel
           </button>
-          <button class="profile-submit" type="submit">Save</button>
+
+          <button id="saveProfileButton" class="profile-submit" type="submit">
+            Save
+          </button>
         </div>
       </form>
     </dialog>
 
     <!-- 2026-10-25, v1.3: the saved profile can be viewed and edited from the picture. -->
-    <dialog
+    <!--<dialog
       id="studentSummaryDialog"
       class="student-summary-dialog"
       aria-labelledby="studentSummaryTitle"
@@ -282,7 +306,7 @@
           </button>
         </div>
       </section>
-    </dialog>
+    </dialog> -->
 
     <!-- 2026-10-31, v1.4.0: teacher password dialog -->
     <dialog
